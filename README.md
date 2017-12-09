@@ -9,7 +9,8 @@ You can quickly setup Bullet by following the [Quick-Start](https://yahoo.github
 ### Setup and Use
 
 Clone the repo `git clone https://github.com/Mogball/TwitterBullet.git` 
-and build the jar with `mvn package`. Use the provided `launch.sh` command or simply run
+and build the jar with `mvn package`. Alternatively, use the provided
+prebuilt jar. Then run `launch.sh` or simple use
 
 ```bash
 storm jar twitter-bullet-1.0-SNAPSHOT-jar-with-dependencies.jar \

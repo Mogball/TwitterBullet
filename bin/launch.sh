@@ -1,6 +1,6 @@
 #! /bin/bash
 
-storm jar twitter-bullet-1.0-SNAPSHOT-jar-with-dependencies.jar \
+storm jar twitter-bullet.jar \
           com.yahoo.bullet.storm.Topology \
           --bullet-conf bullet_settings.yaml \
           --bullet-spout com.yahoo.bullet.twitter.spout.TwitterSpout \
