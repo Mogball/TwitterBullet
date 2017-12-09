@@ -1,8 +1,10 @@
 package com.yahoo.bullet.twitter.model;
 
-
 import twitter4j.User;
 
+/**
+ * Model for a Twitter {@code User}.
+ */
 public class TwitterUser {
 
     public TwitterUser(User user) {

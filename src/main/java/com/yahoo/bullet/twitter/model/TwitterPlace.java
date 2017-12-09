@@ -2,6 +2,9 @@ package com.yahoo.bullet.twitter.model;
 
 import twitter4j.Place;
 
+/**
+ * Model for status {@code Place}.
+ */
 public class TwitterPlace {
 
     public TwitterPlace(Place place) {

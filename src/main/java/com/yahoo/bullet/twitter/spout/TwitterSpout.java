@@ -28,15 +28,38 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * The {@code TwitterSpout} listens to events from a
+ * stream of data from Twitter API, transform the data
+ * into bullet records, and emits them to storm.
+ */
 @Slf4j
 public class TwitterSpout extends BaseRichSpout implements StatusListener {
 
+    /**
+     * Arguments used to initialize the spout. Kept
+     * as a reference since {@code TwitterStream} cannot
+     * be serialized.
+     */
     private final List<String> args;
 
+    /**
+     * The internal Twitter stream from which to listen events.
+     */
     private TwitterStream twitterStream;
+    /**
+     * Statuses from the Twitter stream are inserted
+     * into this queue and flushed to storm.
+     */
     private BlockingQueue<BulletRecord> statusQueue;
+    /**
+     * Whether the spout is active.
+     */
     private AtomicBoolean active;
 
+    /**
+     * Collector for emitted records.
+     */
     private SpoutOutputCollector outputCollector;
 
     /**
@@ -64,6 +87,10 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
         declarer.declare(new Fields("record"));
     }
 
+    /**
+     * Initialize the Twitter stream if needed, add a listener
+     * and begin sampling.
+     */
     @Override
     public void activate() {
         log.info("Activating TwitterSpout");
@@ -75,6 +102,10 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
         active.set(true);
     }
 
+    /**
+     * Turn off the stream and clear remaining
+     * records from the queue.
+     */
     @Override
     public void deactivate() {
         active.set(false);
@@ -93,6 +124,10 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
         outputCollector = spoutOutputCollector;
     }
 
+    /**
+     * Drain all statuses currently in the queue and
+     * emit them to the collector.
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void nextTuple() {
