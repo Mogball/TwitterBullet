@@ -97,6 +97,7 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
         if (twitterStream == null) {
             initializeFromArgs(args);
         }
+        statusQueue.clear();
         twitterStream.addListener(this);
         twitterStream.sample();
         active.set(true);
