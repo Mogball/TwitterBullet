@@ -1,0 +1,77 @@
+[
+  {
+	"name": "created_at",
+	"type": "LONG",
+	"description": "Timestamp of when the Tweet was created"
+  },
+  {
+	"name": "id",
+	"type": "LONG",
+	"description": "ID of the Tweet"
+  },
+  {
+	"name": "location_latitude",
+	"type": "DOUBLE",
+	"description": "Tweet location latitude"
+  },
+  {
+	"name": "location_longitude",
+	"type": "DOUBLE",
+	"description": "Tweet location longitude"
+  },
+  {
+	"name": "is_favorited",
+	"type": "BOOLEAN",
+	"description": "Whether the Tweet has been favorited"
+  },
+  {
+	"name": "is_retweeted",
+	"type": "BOOLEAN",
+	"description": "Whether the Tweet has been retweeted"
+  },
+  {
+	"name": "favorite_count",
+	"type": "LONG",
+	"description": "The number of times the Tweet has been favorited"
+  },
+  {
+	"name": "retweet_count",
+	"type": "LONG",
+	"description": "The number of times the Tweet has been retweeted"
+  },
+  {
+	"name": "language",
+	"type": "STRING",
+	"description": "Language of the Tweet"
+  },
+  {
+	"name": "place_country",
+	"type": "STRING",
+	"description": "Country of the Tweet's location"
+  },
+  {
+	"name": "user_name",
+	"type": "STRING",
+	"description": "Name of the user who made the Tweet"
+  },
+  {
+	"name": "user_location",
+	"type": "STRING",
+	"description": "Location of the user who made the Tweet"
+  },
+  {
+	"name": "user_favorites_count",
+	"type": "LONG",
+	"description": "The number of favorites for the user who made the Tweet"
+  },
+  {
+	"name": "user_statuses_count",
+	"type": "LONG",
+	"description": "The number of Tweets ever made by the User who made the Tweet"
+  },
+  {
+	"name": "user_listed_count",
+	"type": "LONG",
+	"description": "The number of times the User who made the Tweet appears on lists"
+  }
+]
