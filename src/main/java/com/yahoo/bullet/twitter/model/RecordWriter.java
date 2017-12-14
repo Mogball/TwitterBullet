@@ -32,11 +32,11 @@ public class RecordWriter {
      * Find fields marked with {@code RecordEntry},
      * to be written to the record.
      *
-     * @param obj object from which to find fields
+     * @param cls class from which to find fields
      * @return a list of fields
      */
-    protected static List<Field> getEntryFields(Object obj) {
-        Field[] declaredFields = obj.getClass().getDeclaredFields();
+    protected static List<Field> getEntryFields(Class<?> cls) {
+        Field[] declaredFields = cls.getDeclaredFields();
         List<Field> entryFields = new ArrayList<>(declaredFields.length);
         for (Field declaredField : declaredFields) {
             if (declaredField.isAnnotationPresent(RecordEntry.class)) {
@@ -76,7 +76,6 @@ public class RecordWriter {
         }
         Object value;
         try {
-            field.setAccessible(true);
             value = field.get(obj);
         } catch (IllegalAccessException e) {
             log.error("Failed to access field {}", field.getName(), e);
@@ -144,7 +143,7 @@ public class RecordWriter {
      * @param prefix name prefix on fields
      */
     public void writeFieldsOf(@NonNull Object obj, String prefix) {
-        List<Field> fields = getEntryFields(obj);
+        List<Field> fields = getEntryFields(obj.getClass());
         for (Field field : fields) {
             writeValue(record, field, obj, prefix);
         }

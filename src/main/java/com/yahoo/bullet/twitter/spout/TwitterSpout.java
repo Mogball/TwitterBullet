@@ -1,7 +1,6 @@
 package com.yahoo.bullet.twitter.spout;
 
 import com.yahoo.bullet.record.BulletRecord;
-import com.yahoo.bullet.twitter.exception.TwitterBulletRuntimeException;
 import com.yahoo.bullet.twitter.model.RecordWriter;
 import com.yahoo.bullet.twitter.model.TwitterPlace;
 import com.yahoo.bullet.twitter.model.TwitterStatus;
@@ -66,12 +65,12 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
      * Initialize the {@code TwitterSpout}. The Twitter API OAuth access
      * keys and tokens must be passed through the arguments. The passed arguments
      * should be:
-     *
+     * <p>
      * <ol>
-     *     <li>Twitter OAuth consumer key</li>
-     *     <li>Twitter OAuth consumer secret</li>
-     *     <li>Twitter OAuth access token</li>
-     *     <li>Twitter OAuth access token secret</li>
+     * <li>Twitter OAuth consumer key</li>
+     * <li>Twitter OAuth consumer secret</li>
+     * <li>Twitter OAuth access token</li>
+     * <li>Twitter OAuth access token secret</li>
      * </ol>
      *
      * @param args spout arguments
@@ -137,7 +136,7 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
             return;
         }
         if (statusQueue.isEmpty()) {
-            log.info("No statuses in queue");
+            log.debug("No statuses in queue");
         } else {
             List<Object> emitted = new ArrayList<>(statusQueue.size());
             statusQueue.drainTo(emitted);
@@ -153,11 +152,7 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
         }
     }
 
-    private void initializeFromArgs(List<String> args) {
-        if (args == null || args.size() < 4) {
-            log.error("TwitterSpout is missing required arguments.");
-            throw new TwitterBulletRuntimeException("Missing required arguments for TwitterSpout");
-        }
+    protected void initializeFromArgs(List<String> args) {
         log.info("Initializing TwitterStream instance with supplied config");
         ConfigurationBuilder configBuilder = new ConfigurationBuilder();
         configBuilder
@@ -173,42 +168,58 @@ public class TwitterSpout extends BaseRichSpout implements StatusListener {
     @Override
     public void onStatus(Status status) {
         if (!active.get()) {
-            log.info("TwitterSpout is not active; ignoring Status");
+            log.debug("TwitterSpout is not active; ignoring Status");
             return;
         }
         if (statusQueue.remainingCapacity() == 0) {
-            log.info("TwitterSpout is full; dropping oldest Status");
+            log.debug("TwitterSpout is full; dropping oldest Status");
             statusQueue.poll();
         }
         statusQueue.offer(statusToRecord(status));
     }
 
     @Override
-    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {}
+    public void onDeletionNotice(StatusDeletionNotice statusDeletionNotice) {
+    }
 
     @Override
-    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {}
+    public void onTrackLimitationNotice(int numberOfLimitedStatuses) {
+    }
 
     @Override
-    public void onScrubGeo(long userId, long upToStatusId) {}
+    public void onScrubGeo(long userId, long upToStatusId) {
+    }
 
     @Override
-    public void onStallWarning(StallWarning warning) {}
+    public void onStallWarning(StallWarning warning) {
+    }
 
     @Override
     public void onException(Exception e) {
         log.error("Error in listener", e);
     }
 
+    /**
+     * Convert a status from Twitter to a bullet record.
+     *
+     * @param status status to convert
+     * @return a bullet record
+     */
     protected static BulletRecord statusToRecord(Status status) {
-        TwitterStatus twitterStatus = new TwitterStatus(status);
-        TwitterPlace twitterPlace = new TwitterPlace(status.getPlace());
-        TwitterUser twitterUser = new TwitterUser(status.getUser());
         BulletRecord bulletRecord = new BulletRecord();
         RecordWriter recordWriter = new RecordWriter(bulletRecord);
-        recordWriter.writeFieldsOf(twitterStatus, null);
-        recordWriter.writeFieldsOf(twitterPlace, "place");
-        recordWriter.writeFieldsOf(twitterUser, "user");
+        if (status != null) {
+            TwitterStatus twitterStatus = new TwitterStatus(status);
+            recordWriter.writeFieldsOf(twitterStatus, null);
+            if (status.getPlace() != null) {
+                TwitterPlace twitterPlace = new TwitterPlace(status.getPlace());
+                recordWriter.writeFieldsOf(twitterPlace, "place");
+            }
+            if (status.getUser() != null) {
+                TwitterUser twitterUser = new TwitterUser(status.getUser());
+                recordWriter.writeFieldsOf(twitterUser, "user");
+            }
+        }
         return bulletRecord;
     }
 }

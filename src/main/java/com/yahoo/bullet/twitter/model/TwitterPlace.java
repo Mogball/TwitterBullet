@@ -8,10 +8,6 @@ import twitter4j.Place;
 public class TwitterPlace {
 
     public TwitterPlace(Place place) {
-        if (place == null) {
-            return;
-        }
-
         this.id = place.getId();
         this.name = place.getName();
         this.streetAddress = place.getStreetAddress();
@@ -24,20 +20,20 @@ public class TwitterPlace {
     }
 
     @RecordEntry("id")
-    private String id;
-    @RecordEntry("name")
-    private String name;
+    public final String id;
+    @RecordEntry(value = "name", desc = "Default name of the Place")
+    public final String name;
     @RecordEntry("street_address")
-    private String streetAddress;
+    public final String streetAddress;
 
     @RecordEntry("country_code")
-    private String countryCode;
+    public final String countryCode;
     @RecordEntry("country")
-    private String country;
+    public final String country;
 
-    @RecordEntry("type")
-    private String type;
-    @RecordEntry("full_name")
-    private String fullName;
+    @RecordEntry(value = "type", desc = "The type of Place described")
+    public final String type;
+    @RecordEntry(value = "full_name", desc = "Verbose name of the Tweet Place")
+    public final String fullName;
 
 }

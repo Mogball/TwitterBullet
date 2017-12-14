@@ -15,4 +15,9 @@ public @interface RecordEntry {
      */
     String value();
 
+    /**
+     * @return description of the field
+     */
+    String desc() default "";
+
 }

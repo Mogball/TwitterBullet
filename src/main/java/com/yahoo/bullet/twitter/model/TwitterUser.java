@@ -8,10 +8,6 @@ import twitter4j.User;
 public class TwitterUser {
 
     public TwitterUser(User user) {
-        if (user == null) {
-            return;
-        }
-
         this.id = user.getId();
         this.name = user.getName();
         this.screenName = user.getScreenName();
@@ -33,7 +29,11 @@ public class TwitterUser {
         this.followersCount = user.getFollowersCount();
         this.friendsCount = user.getFriendsCount();
 
-        this.createdAt = user.getCreatedAt().getTime();
+        if (user.getCreatedAt() != null) {
+            this.createdAt = user.getCreatedAt().getTime();
+        } else {
+            this.createdAt = -1;
+        }
         this.favoritesCount = user.getFavouritesCount();
         this.statusCount = user.getStatusesCount();
         this.listedCount = user.getListedCount();
@@ -49,66 +49,66 @@ public class TwitterUser {
     }
 
     @RecordEntry("id")
-    private long id;
-    @RecordEntry("name")
-    private String name;
-    @RecordEntry("screen_name")
-    private String screenName;
+    public final long id;
+    @RecordEntry(value = "name", desc = "The proper name of the User")
+    public final String name;
+    @RecordEntry(value = "screen_name", desc = "The displayed name of the User")
+    public final String screenName;
 
-    @RecordEntry("location")
-    private String location;
+    @RecordEntry(value = "location", desc = "The User's provided location")
+    public final String location;
     @RecordEntry("description")
-    private String description;
+    public final String description;
 
     @RecordEntry("is_contributors_enabled")
-    private boolean contributorsEnabled;
+    public final boolean contributorsEnabled;
     @RecordEntry("is_default_profile")
-    private boolean defaultProfile;
+    public final boolean defaultProfile;
     @RecordEntry("is_default_profile_image")
-    private boolean defaultProfileImage;
+    public final boolean defaultProfileImage;
     @RecordEntry("is_profile_use_background_image")
-    private boolean profileBackgroundImage;
+    public final boolean profileBackgroundImage;
     @RecordEntry("is_profile_background_tiled")
-    private boolean profileBackgroundTiled;
+    public final boolean profileBackgroundTiled;
     @RecordEntry("is_geo_location_enabled")
-    private boolean geoEnabled;
+    public final boolean geoEnabled;
     @RecordEntry("is_verified")
-    private boolean verifiedCelebrity;
+    public final boolean verifiedCelebrity;
     @RecordEntry("is_translator")
-    private boolean translator;
+    public final boolean translator;
     @RecordEntry("is_show_all_inline_media")
-    private boolean showInlineMedia;
+    public final boolean showInlineMedia;
     @RecordEntry("is_protected")
-    private boolean userProtected;
+    public final boolean userProtected;
 
     @RecordEntry("followers_count")
-    private long followersCount;
+    public final long followersCount;
     @RecordEntry("friends_count")
-    private long friendsCount;
+    public final long friendsCount;
 
-    @RecordEntry("created_at")
-    private long createdAt;
-    @RecordEntry("favorites_count")
-    private long favoritesCount;
-    @RecordEntry("statuses_count")
-    private long statusCount;
-    @RecordEntry("listed_count")
-    private long listedCount;
+    @RecordEntry(value = "created_at", desc = "Timestamp of the User account's creation")
+    public final long createdAt;
+    @RecordEntry(value = "favorites_count", desc = "Total number of favorites of the User")
+    public final long favoritesCount;
+    @RecordEntry(value = "statuses_count", desc = "Total number of Tweets made by the User")
+    public final long statusCount;
+    @RecordEntry(value = "listed_count", desc = "Number of times the User appears in public lists")
+    public final long listedCount;
 
     @RecordEntry("profile_background_color")
-    private String profileBackgroundColor;
+    public final String profileBackgroundColor;
     @RecordEntry("profile_text_color")
-    private String profileTextColor;
+    public final String profileTextColor;
     @RecordEntry("profile_link_color")
-    private String profileLinkColor;
+    public final String profileLinkColor;
     @RecordEntry("profile_sidebar_fill_color")
-    private String profileSidebarFillColor;
+    public final String profileSidebarFillColor;
     @RecordEntry("profile_sidebar_border_color")
-    private String profileSidebarBorderColor;
+    public final String profileSidebarBorderColor;
 
     @RecordEntry("time_zone")
-    private String timeZone;
-    @RecordEntry("language")
-    private String language;
+    public final String timeZone;
+    @RecordEntry(value = "language", desc = "User's preferred language")
+    public final String language;
 
 }
