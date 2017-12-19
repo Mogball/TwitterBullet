@@ -30,6 +30,8 @@ public class TwitterStatus {
 
         this.favorited = status.isFavorited();
         this.retweeted = status.isRetweeted();
+        this.retweet = status.isRetweet();
+        this.possiblySensitive = status.isPossiblySensitive();
 
         this.favoriteCount = status.getFavoriteCount();
         this.retweetCount = status.getRetweetCount();
@@ -42,6 +44,7 @@ public class TwitterStatus {
         this.quotedStatusId = status.getQuotedStatusId();
 
         this.language = status.getLang();
+        this.textLength = status.getDisplayTextRangeEnd() - status.getDisplayTextRangeStart();
     }
 
     @RecordEntry(value = "created_at", desc = "Timestamp of Tweet creation")
@@ -68,6 +71,10 @@ public class TwitterStatus {
     public final boolean favorited;
     @RecordEntry("is_retweeted")
     public final boolean retweeted;
+    @RecordEntry("is_retweet")
+    public final boolean retweet;
+    @RecordEntry("is_possibly_sensitive")
+    public final boolean possiblySensitive;
 
     @RecordEntry(value = "favorite_count", desc = "The number of times this Tweet has been favorited")
     public final long favoriteCount;
@@ -78,6 +85,9 @@ public class TwitterStatus {
     public final long retweetedStatusId;
     @RecordEntry(value = "quoted_status_id", desc = "The ID of the Tweet that is quoted")
     public final long quotedStatusId;
+
+    @RecordEntry("text_length")
+    public final long textLength;
 
     @RecordEntry(value = "language", desc = "The estimated language of the Tweet")
     public final String language;
